@@ -424,7 +424,7 @@ Fem un curl però tampoc trobem res rellevant en quant a framworks, etc:
 </html>
 ````
 
-Com que a la pàgina web tampoc sembla que hi hagi res rellevant ja que hi ha la pàgina per defecte d'apache, rizaremos el rizo una mica més amb l'escaneig de ports d'nmap i després si de cas farem un escaneig de directoris i sbudominis.
+Com que a la pàgina web tampoc sembla que hi hagi res rellevant ja que hi ha la pàgina per defecte d'apache, "rizaremos el rizo" una mica més amb l'escaneig de ports d'nmap i després si de cas farem un escaneig de directoris i subdominis.
 
 Amb aquest whatweb no veiem cap informació que ens pugui ser gaire rellevant.
 Un cop escanejats amb nmap els ports, fem un escaneig de ports UDP amb -sU, per si hi ha algun port UDP que mereix ser comprovat i analitzat:
@@ -515,7 +515,7 @@ Nmap done: 2 IP addresses (2 hosts up) scanned in 8.92 seconds
 ````
 
 
-Sembla que no aconseguim gaire informació rellevant, per tant el ChatGPT ens sufggereix provar amb una eina anomenada snmpwalk i fer una enumeració a veure què trobem:
+Sembla que no aconseguim gaire informació rellevant, per tant el ChatGPT ens suggereix provar amb una eina anomenada snmpwalk i fer una enumeració a veure què trobem:
 
  ````                                                                                                                                                                                                                                    
 ┌──(kali㉿kali)-[~]
