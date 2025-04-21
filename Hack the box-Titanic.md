@@ -65,7 +65,8 @@ Nmap done: 1 IP address (1 host up) scanned in 11.90 seconds
 
 Trobem dos ports oberts, accés a una web pel port 80 i a la que tinguem unes credencials ens podrem connectar per SSH ja que també hi ha accés al port 22 que és el port ssh per defecte. Ara, per tant, afegirem al fitxer /etc/hosts aquesta IP i l'associarem al nom de domini titanic.htb. La web està feta com si es recreés la web del vaixell Titanic, es pot reservar el viatge, veure els serveis que ofereix, etc. La pàgina sembla que està en construcció ja que no van totes les funcionalitats que sembla tenir:
 
-![[Pasted image 20250223203106.png]]
+![image](https://github.com/user-attachments/assets/4db27e38-6915-4fa0-8c16-9f1a71ab838b)
+
 
 Ara farem un wget/curl i un whatweb per veure que hi ha.
 
@@ -82,7 +83,8 @@ Ara farem una enumeració de directoris a veure si trobem alguna cosa que ens pu
 
 Un dels directoris trobats és titanic.htb/download i sembla que es poden veure JSON fet a la hora de reservar ticket, potser es poden manipular i ens pot ser útil: 
 
-![[Pasted image 20250223204414.png]]
+![image](https://github.com/user-attachments/assets/535ee019-55a6-492e-9dde-e4407e2a1eb9)
+
 
 És estrany però perquè fer una reserva se'ns desa un fitxer JSON amb les dades que hem emplenat. Els resultats de l'escaneig de directoris on tot ens retorna 400 i per tant no podem fer/veure res:
 
@@ -147,15 +149,18 @@ dev                     [Status: 200, Size: 13982, Words: 1107, Lines: 276, Dura
 
 Ara afegim dev.titanic.htb al fitxer /etc/hosts. Aquí ens trobem això:
 
-![[Pasted image 20250223210429.png]]
+![image](https://github.com/user-attachments/assets/57ddb299-60ac-4bff-9fe3-8db07ed5072c)
+
 
 Anem a explore i veiem que hi ha dos repos on potser hi podem trobar alguna vulnerabilitat:
 
-![[Pasted image 20250223210954.png]]
+![image](https://github.com/user-attachments/assets/55be4c14-0148-456a-88c3-8d2e04a19878)
+
 
 Al repo docker-config hi ha la contrasenya root de la BD:
 
-![[Pasted image 20250223211048.png]]
+![image](https://github.com/user-attachments/assets/c823e7cb-fb4c-4e27-9423-28239e3edd6a)
+
 
 També hi ha un repo anomenat flask-app on hi ha un fitxer que es diu app.py, li pregunto al ChatGPT si hi ha alguna vulnerabilitat que podem utilitzar al codi:
 ```
@@ -431,7 +436,7 @@ Ens retorna el fitxer /etc/passwd, per tant el path traversal funciona perfectam
 
 Com a través de la URL, si ho fem a través de la URL ens descarrega un fitxer que podem llegir:
 
-![[Pasted image 20250226214410.png]]
+![image](https://github.com/user-attachments/assets/da0622aa-6d0e-44ff-b64d-c694927c7adc)
 
 
 El que provaré serà fer una comanda per mirar d'aconseguir la user flag intentat aconseguir llegir el que hi ha d'haver a /home/developer/user.txt. Molt fàcil, com que havia funcionat la comanda que havia dit el ChatGPT ha estat molt fàcil fer funcionar la comanda per aconseguir la user flag, a la primera, ja que l'estructura dels directoris és que el /home està per defecte a l'arrel, igual que el directori /etc:
@@ -439,8 +444,7 @@ El que provaré serà fer una comanda per mirar d'aconseguir la user flag intent
 
 http://titanic.htb/download?ticket=../../../home/developer/user.txt
 
-![[Pasted image 20250226214421.png]]
-
+![image](https://github.com/user-attachments/assets/8905c1db-57c4-43f1-8f37-0e94c6de757b)
 
 El mateix fet amb curl:
 
@@ -457,7 +461,8 @@ Abans al fer l'escaneig de subdominis hem trobat el subdomini dev.titanic.htb. S
 
 A sota de tot de la pàgina hi ha la versió de Gitea, per tant el primer que fem és buscar si té algun CVE o POC:
 
-![[Pasted image 20250226214436.png]]
+![image](https://github.com/user-attachments/assets/3e19cbe1-eab7-4f66-bfff-95922bcb9e18)
+
 
 Impulsado por Gitea Versión: 1.22.1
 
@@ -506,19 +511,23 @@ Warning: Binary output can mess up your terminal. Use "--output -" to tell curl 
 Warning: consider "--output <FILE>" to save to a file.
 ```
 
-![[Pasted image 20250301193721.png]]
+![image](https://github.com/user-attachments/assets/7d6fea80-8f17-4892-a0f3-6e48942b504b)
+
 
 Podem veure totes les taules de la BD, on n'hi ha una que es diu user i podem veure la seva estructura des de la pròpia Kali Linux nostre:
 
-![[Pasted image 20250301193942.png]]
+![image](https://github.com/user-attachments/assets/c3cac366-ed85-43a4-b795-3af1887564c1)
+
 
 I el contingut de la taula user clicant a Browse Table:
 
-![[Pasted image 20250301194026.png]]
+![image](https://github.com/user-attachments/assets/ee369d69-b559-44bb-b7a6-c5941bc9f49d)
+
 
 I ara tenim les contrasenyes dels usuaris en format hash, el salt i el tipus de hash que és:
 
-![[Pasted image 20250421082148.png]]
+![image](https://github.com/user-attachments/assets/2f060beb-e2cd-43fa-88d4-f5708549c8f5)
+
 
 Ara, tocarà mirar de crackejar alguna de les contrasenyes a veure si podem accedir per ssh la màquina víctima amb elles. Els usuaris i contrasenyes trobats a la BD gitea extrets en format JSON:
 
@@ -762,7 +771,7 @@ truncate -s 0 metadata.log
 find /opt/app/static/assets/images/ -type f -name "*.jpg" | xargs /usr/bin/magick identify >> metadata.log
 ```
 
-## 🔍 Què fa aquest script?
+## Què fa aquest script?
 
 1. **Canvia de directori** a on hi ha les imatges.
 
@@ -829,7 +838,8 @@ Abans d'acabar, podríem mirar d'esborrar esborrem les nostres empremtes del sis
 
 Ja tenim la màquina completada !!!
 
-![[Pasted image 20250421095343.png]]
+![image](https://github.com/user-attachments/assets/0f566376-3b43-4d60-806d-ba166ac43ac6)
+
 
 
 
